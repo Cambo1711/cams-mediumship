@@ -1,0 +1,144 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cameran’s Cosmic Blueprint and Ethereal Mediumship</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #F5F5DC; /* Beige background */
+            color: #333;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        header {
+            padding: 40px;
+            background: linear-gradient(135deg, #D4AF37, #E6E6FA); /* Gold to soft violet gradient */
+        }
+        nav {
+            background-color: #E6E6FA; /* Soft violet */
+            padding: 10px;
+        }
+        nav a {
+            color: #D4AF37; /* Gold */
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.1em;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .logo {
+            max-width: 300px;
+            height: auto;
+        }
+        h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3em;
+            color: #FFFFFF; /* White text */
+            margin: 10px 0;
+        }
+        h2 {
+            font-size: 1.5em;
+            color: #D4AF37; /* Gold */
+            margin: 10px 0;
+        }
+        section {
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        p {
+            line-height: 1.6;
+            font-size: 1.1em;
+        }
+        .contact {
+            background-color: #E6E6FA; /* Soft violet */
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+        a {
+            color: #D4AF37; /* Gold */
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="https://via.placeholder.com/300x400" alt="Cameran Logo" class="logo">
+        <h1>Cameran’s</h1>
+        <h2>Cosmic Blueprint and Ethereal Mediumship</h2>
+    </header>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="blog/index.html">Blog</a>
+        <a href="#contact">Contact</a>
+    </nav>
+    <section>
+        <h2>Unlock Your Spiritual Path with Cameran</h2>
+        <p>
+            I’m Cameran Quinn, a certified psychic, medium, and human design coach based in Australia, with a deep passion for helping people heal and find clarity. I offer <strong>mediumship readings</strong> and <strong>psychic readings</strong> to provide guidance on love, career, relationships, or any situation you’re facing. These sessions are available via Zoom or email, making it easy for clients worldwide to connect with me.
+        </p>
+        <p>
+            As a human design coach, I help you discover your unique human blueprint. Would you like to find your human blueprint and see how it aligns with your spiritual journey, including through mediumship? I’m here to guide you. Additionally, as a Reiki master, I bring a healing energy to all my work, supporting your emotional and spiritual growth.
+        </p>
+        <p>
+            I’ve recently graduated from a mentorship program with Medium Thomas John and am continuing to develop my skills under his guidance. You can also find my daily insights on my YouTube channel, <em>Daily Thoughts with Cam</em>.
+        </p>
+        <div class="contact" id="contact">
+            <h3>Connect with Me</h3>
+            <p>Email: <a href="mailto:camerant17@gmail.com">camerant17@gmail.com</a></p>
+            <p>Facebook: <a href="https://www.facebook.com/cameran.quinn" target="_blank">Cameran Quinn</a></p>
+            <p>YouTube: <a href="https://www.youtube.com/@DailyThoughtsWithCam" target="_blank">Daily Thoughts with Cam</a></p>
+            <p>Ready to begin your journey? Reach out to book a session today!</p>
+        </div>
+    </section>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+</body>
+</html>
